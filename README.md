@@ -4,9 +4,7 @@
 
 PhishGuard is a Python-based desktop application designed to identify and analyze potential phishing threats in website URLs and email content.
 
-The application provides risk classification, scan history management, dashboard statistics, database integration, and report generation through a graphical user interface.
-
----
+It provides rule-based phishing detection, risk classification, scan history management, dashboard statistics, MySQL database integration, and PDF/CSV report generation through a graphical user interface.
 
 ## Features
 
@@ -14,6 +12,8 @@ The application provides risk classification, scan history management, dashboard
 - Analyze website URLs.
 - Detect suspicious URL patterns and keywords.
 - Identify URLs that do not use HTTPS.
+- Check for suspicious IP-based URLs.
+- Identify potentially misleading URL structures.
 - Classify URL risk levels.
 
 ### 2. Email Phishing Detection
@@ -27,7 +27,7 @@ The application provides risk classification, scan history management, dashboard
 - View scan statistics.
 - Monitor URL and email scans.
 - View risk distribution.
-- Access application modules through a sidebar.
+- Navigate application modules through a sidebar.
 
 ### 4. Scan History
 - Store URL and email scan records.
@@ -47,8 +47,6 @@ The application provides risk classification, scan history management, dashboard
 - Persistent storage of scan records.
 - Database connection testing.
 
----
-
 ## Technologies Used
 
 | Technology | Purpose |
@@ -56,47 +54,48 @@ The application provides risk classification, scan history management, dashboard
 | Python | Application development |
 | Tkinter | Graphical user interface |
 | MySQL | Database management |
-| mysql-connector-python | Python-MySQL connectivity |
-| python-dotenv | Environment configuration |
+| mysql-connector-python | Python–MySQL connectivity |
+| python-dotenv | Environment variable management |
 | ReportLab | PDF report generation |
-
----
 
 ## Project Structure
 
+```text
 PhishGuard/
-|
-|-- assets/
-|   |-- icons/
-|
-|-- backend/
-|   |-- __init__.py
-|   |-- database.py
-|   |-- email_detection.py
-|   |-- url_detection.py
-|   |-- reports.py
-|
-|-- frontend/
-|   |-- __init__.py
-|   |-- dashboard.py
-|
-|-- tests/
-|   |-- __init__.py
-|   |-- test_database.py
-|   |-- test_email.py
-|   |-- test_url.py
-|
-|-- docs/
-|-- reports/
-|-- venv/
-|
-|-- .env
-|-- .gitignore
-|-- main.py
-|-- README.md
-|-- requirements.txt
+│
+├── backend/
+│   ├── __init__.py
+│   ├── database.py
+│   ├── email_detection.py
+│   ├── reports.py
+│   └── url_detection.py
+│
+├── frontend/
+│   ├── __init__.py
+│   └── dashboard.py
+│
+├── tests/
+│   ├── __init__.py
+│   ├── test_database.py
+│   ├── test_email.py
+│   └── test_url.py
+│
+├── docs/
+│   ├── PROJECT_OVERVIEW.md
+│   ├── PROJECT_STRUCTURE.md
+│   ├── SYSTEM_ARCHITECTURE.md
+│   └── USER_GUIDE.md
+│
+├── reports/
+│
+├── .env
+├── .gitignore
+├── main.py
+├── README.md
+└── requirements.txt
+```
 
----
+Note: `.env` and the virtual environment are local files and are not included in the public repository.
 
 ## System Requirements
 
@@ -105,87 +104,98 @@ PhishGuard/
 - MySQL Server
 - pip package manager
 
----
-
 ## Installation and Setup
 
-### Step 1: Install Python
+### Step 1: Clone the Repository
 
-Install Python and verify:
+```bash
+git clone https://github.com/Jaswanthgit4346/PhishGuard.git
+cd PhishGuard
+```
 
-    python --version
+### Step 2: Create a Virtual Environment
 
-### Step 2: Install MySQL
+```bash
+python -m venv venv
+```
+
+Activate it using PowerShell:
+
+```powershell
+.\venv\Scripts\Activate.ps1
+```
+
+### Step 3: Install Dependencies
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+### Step 4: Configure MySQL
 
 Install and configure MySQL Server.
 
-Create the database:
+Create the project database:
 
-    CREATE DATABASE phishguard_db;
-
-### Step 3: Create a Virtual Environment
-
-    python -m venv venv
-
-Activate it in PowerShell:
-
-    .\venv\Scripts\Activate.ps1
-
-### Step 4: Install Dependencies
-
-    pip install -r requirements.txt
+```sql
+CREATE DATABASE phishguard_db;
+```
 
 ### Step 5: Configure Environment Variables
 
 Create a `.env` file in the project root directory.
 
-Add your local database configuration:
+Add your MySQL password:
 
-    DB_HOST=localhost
-    DB_USER=root
-    DB_PASSWORD=your_mysql_password
-    DB_NAME=phishguard_db
+```env
+PHISHGUARD_DB_PASSWORD=your_mysql_password
+```
 
-Use your actual MySQL credentials locally. Never publish this file.
+Replace `your_mysql_password` with your actual local MySQL password.
+
+Keep your `.env` file private. Never upload it to GitHub.
 
 ### Step 6: Run the Application
 
-    python main.py
-
----
+```bash
+python main.py
+```
 
 ## Running Tests
 
-Run the following commands from the project root directory:
+Run the following commands from the project root directory.
 
 ### URL Detection Test
 
-    python -m tests.test_url
+```bash
+python -m tests.test_url
+```
 
 ### Email Detection Test
 
-    python -m tests.test_email
+```bash
+python -m tests.test_email
+```
 
 ### Database Test
 
-    python -m tests.test_database
+```bash
+python -m tests.test_database
+```
 
-Note: The database test can insert records into your configured database.
-
----
+Note: The database test may insert records into your configured MySQL database.
 
 ## Database
 
 PhishGuard uses MySQL to maintain scan records.
 
 The database stores information related to:
+
 - URL scans
 - Email scans
 - Risk classifications
 - Detection results
 - Scan timestamps
-
----
 
 ## Security Considerations
 
@@ -195,16 +205,12 @@ The database stores information related to:
 - Do not assume that a low-risk classification guarantees a URL or email is safe.
 - Verify suspicious websites and emails independently.
 
----
-
 ## Project Limitations
 
 - Detection is based on programmed rules and patterns.
 - New phishing techniques may not always be detected.
 - Risk classifications are indicators, not guarantees.
-- The application requires a working MySQL connection for database operations.
-
----
+- Database operations require a working MySQL connection.
 
 ## Future Enhancements
 
@@ -215,21 +221,17 @@ The database stores information related to:
 - Improved detection accuracy.
 - User authentication and access management.
 
----
-
 ## Project Information
 
-**Project Name:** PhishGuard
-
-**Category:** Cybersecurity
-
-**Application Type:** Python Desktop Application
-
-**Primary Language:** Python
-
-**Database:** MySQL
-
----
+| Detail | Description |
+|---|---|
+| Project Name | PhishGuard |
+| Category | Cybersecurity |
+| Application Type | Python Desktop Application |
+| Primary Language | Python |
+| GUI Framework | Tkinter |
+| Database | MySQL |
+| Detection Approach | Rule-based |
 
 ## License
 

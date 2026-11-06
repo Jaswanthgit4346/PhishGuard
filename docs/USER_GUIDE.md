@@ -1,202 +1,272 @@
-# PhishGuard – User Guide
+
+# PhishGuard - User Guide
 
 ## 1. Introduction
 
-This guide explains how to install, configure, launch, and use PhishGuard.
+PhishGuard is a Python-based desktop application designed to analyze website URLs and email content for potential phishing threats.
 
-PhishGuard is a Python-based desktop application for analyzing potentially suspicious URLs and email content.
+This guide explains how to install, configure, run, and use the application.
 
 ## 2. System Requirements
 
-Before installing PhishGuard, ensure that your system has:
+| Component | Requirement |
+|---|---|
+| Operating System | Windows 10 or Windows 11 |
+| Programming Language | Python 3.13 or compatible version |
+| Database | MySQL Server |
+| Package Manager | pip |
+| GUI Framework | Tkinter |
 
-- Windows, Linux, or another supported Python environment.
-- Python 3.10 or later.
-- MySQL Server 8.0 or compatible version.
-- Internet access for downloading dependencies.
-- Basic knowledge of using a terminal.
+## 3. Download the Project
 
-## 3. Installation
+Open PowerShell or the VS Code terminal.
 
-### Step 1: Install Python
+Clone the GitHub repository:
 
-Download and install Python from:
-
-https://www.python.org/downloads/
-
-Verify the installation:
-
-```bash
-python --version
+```powershell
+git clone https://github.com/Jaswanthgit4346/PhishGuard.git
 ```
 
-### Step 2: Install MySQL
+Navigate into the project directory:
 
-Install MySQL Server and ensure that the database service is running.
-
-Official download:
-
-https://dev.mysql.com/downloads/mysql/
-
-### Step 3: Obtain the Project
-
-Clone the PhishGuard repository:
-
-```bash
-git clone <YOUR_GITHUB_REPOSITORY_URL>
-```
-
-Alternatively, download the repository as a ZIP file and extract it.
-
-Navigate to the project directory:
-
-```bash
+```powershell
 cd PhishGuard
 ```
 
-## 4. Environment Setup
+## 4. Create a Virtual Environment
 
 Create a Python virtual environment:
 
-```bash
+```powershell
 python -m venv venv
 ```
 
-Activate it on Windows PowerShell:
+Activate the environment:
 
 ```powershell
 .\venv\Scripts\Activate.ps1
 ```
 
-Install the required dependencies:
+After activation, the terminal should display `(venv)`.
 
-```bash
+## 5. Install Dependencies
+
+Install all required Python packages:
+
+```powershell
 python -m pip install -r requirements.txt
 ```
 
-## 5. Database Configuration
+The project uses the following packages:
 
-PhishGuard uses MySQL to store scan records.
+- mysql-connector-python
+- python-dotenv
+- reportlab
 
-Open MySQL and create the application database if it does not already exist:
+## 6. Configure the MySQL Database
+
+### 6.1 Install MySQL
+
+Install and configure MySQL Server on your computer.
+
+Make sure the MySQL service is running.
+
+### 6.2 Create the Database
+
+Open MySQL and execute:
 
 ```sql
 CREATE DATABASE phishguard_db;
 ```
 
-Configure the database connection using a local `.env` file.
+The application uses this database to store URL and email scan records.
 
-Use the environment variable names and configuration format expected by `backend/database.py`.
+### 6.3 Configure the Database Password
 
-**Important:** Replace placeholder credentials with your own local MySQL credentials. Never publish your actual database password or `.env` file on GitHub.
+Create a file named `.env` in the root PhishGuard directory.
 
-## 6. Running PhishGuard
+Add the following configuration:
 
-After completing the installation and database configuration, launch the application:
+```env
+PHISHGUARD_DB_PASSWORD=your_mysql_password
+```
 
-```bash
+Replace `your_mysql_password` with your actual local MySQL password.
+
+Keep this file private. It must not be uploaded to GitHub.
+
+## 7. Run the Application
+
+Make sure the virtual environment is activated and MySQL Server is running.
+
+Execute:
+
+```powershell
 python main.py
 ```
 
-The PhishGuard desktop dashboard should open.
+The PhishGuard desktop application should open.
 
-## 7. Using the Application
+## 8. Using the Application
 
-### 7.1 Dashboard
+### 8.1 Dashboard
 
-The dashboard provides an overview of application activity, including available scan statistics.
+The dashboard provides an overview of the application's scan activity.
 
-### 7.2 URL Analysis
+Users can view:
+- Total scan statistics.
+- URL and email scan information.
+- Risk distribution.
+- Application navigation options.
 
-1. Open the URL scanning section.
-2. Enter the URL you want to analyze.
-3. Start the scan.
-4. Review the risk classification and analysis results.
+### 8.2 URL Scanner
 
-### 7.3 Email Analysis
+The URL Scanner analyzes a website URL and checks for suspicious characteristics.
 
-1. Open the email scanning section.
-2. Enter or paste the email content.
-3. Start the analysis.
-4. Review the detected phishing indicators and risk classification.
+The application evaluates programmed indicators such as:
+- HTTPS usage.
+- Suspicious keywords.
+- IP-based hostnames.
+- URL length.
+- Suspicious URL structure.
 
-### 7.4 Scan History
+The application displays a risk classification and detection results.
 
-The scan history section allows users to:
+### 8.3 Email Analyzer
 
-- View previous URL scans.
-- View previous email scans.
-- Review risk classifications.
-- Search or filter available records.
+The Email Analyzer evaluates email content for potential phishing indicators.
+
+It checks for:
+- Suspicious phrases.
+- Urgent or pressuring language.
+- Insecure links.
+- Suspicious URL patterns.
+
+The analysis produces a risk classification and associated findings.
+
+### 8.4 Scan History
+
+The Scan History section displays previously stored URL and email scan records.
+
+Users can:
+- View previous scans.
+- Search and filter records.
+- Identify risk levels through colour coding.
 - Delete individual records.
-- Clear scan history.
+- Clear history after confirmation.
 
-### 7.5 Dashboard Statistics
+### 8.5 Reports
 
-The dashboard provides statistics based on stored scan records.
+The Reports section provides options to generate and export scan information.
 
-### 7.6 Report Generation
-
-Users can generate reports in supported formats:
-
+Supported formats:
 - PDF
 - CSV
 
-Follow the application's report generation options to create and save reports.
+Generated reports can be saved and reviewed outside the application.
 
-## 8. Running Tests
+### 8.6 Settings
 
-PhishGuard includes testing scripts for its main components.
+The Settings section provides access to the application's available configuration and database-related options.
 
-Run the following commands from the project root:
+## 9. Running the Tests
 
-**Database test**
+The project contains separate test modules.
 
-```bash
-python -m tests.test_database
-```
+### URL Detection Test
 
-**Email detection test**
-
-```bash
-python -m tests.test_email
-```
-
-**URL detection test**
-
-```bash
+```powershell
 python -m tests.test_url
 ```
 
-Some tests may require user input or a working MySQL connection.
+This test module allows URL detection functionality to be checked.
 
-## 9. Troubleshooting
+### Email Detection Test
 
-| Problem | Suggested Solution |
-|---|---|
-| Python command not recognized | Check Python installation and PATH configuration. |
-| Module not found | Activate the virtual environment and install requirements. |
-| Database connection failed | Verify MySQL is running and check local database credentials. |
-| Database does not exist | Create `phishguard_db` in MySQL. |
-| Application does not launch | Check the terminal for Python errors. |
-| Report generation fails | Verify the required reporting dependencies are installed. |
+```powershell
+python -m tests.test_email
+```
 
-## 10. Security Recommendations
+This test module checks email analysis functionality.
 
-- Never share database passwords publicly.
-- Keep `.env` excluded from Git.
-- Do not enter real passwords or sensitive personal information into test inputs.
-- Treat detection results as indicators rather than guaranteed security verdicts.
-- Do not open suspicious links simply because a scan reports a low risk.
+### Database Test
 
-## 11. Limitations
+```powershell
+python -m tests.test_database
+```
 
-PhishGuard currently uses predefined detection rules. It does not guarantee detection of every phishing attack.
+This test module checks database connectivity and scan-history operations.
 
-A low-risk result does not guarantee that a URL or email is safe.
+Note: The database test may create records in the configured database.
 
-## 12. Conclusion
+## 10. Troubleshooting
 
-PhishGuard provides an accessible desktop interface for basic URL and email phishing analysis.
+### Problem: MySQL Connection Failed
 
-This guide helps users install, configure, and operate the application while following basic security practices.
+Possible reasons:
+- MySQL Server is not running.
+- Database does not exist.
+- Incorrect MySQL password.
+- Incorrect database configuration.
+
+Solutions:
+1. Check whether MySQL Server is running.
+2. Verify that `phishguard_db` exists.
+3. Check the password in `.env`.
+4. Restart the application.
+
+### Problem: Module Not Found
+
+Install the required packages:
+
+```powershell
+python -m pip install -r requirements.txt
+```
+
+### Problem: Application Does Not Start
+
+Check the Python version:
+
+```powershell
+python --version
+```
+
+Check whether the virtual environment is activated.
+
+Also verify that all required project files are present.
+
+## 11. Security Guidelines
+
+- Never share your MySQL password.
+- Never upload `.env` to GitHub.
+- Avoid opening suspicious URLs.
+- Do not enter personal credentials on untrusted websites.
+- Treat detection results as indicators rather than guarantees.
+
+## 12. Limitations
+
+PhishGuard currently uses rule-based detection.
+
+It does not guarantee the detection of every phishing website or email.
+
+A low-risk result does not guarantee that the analyzed content is safe.
+
+The application is intended for educational and demonstration purposes.
+
+## 13. Future Enhancements
+
+Possible improvements include:
+
+- Machine learning-based phishing detection.
+- Real-time threat intelligence.
+- Domain reputation analysis.
+- Advanced email header analysis.
+- Improved detection techniques.
+
+## 14. Conclusion
+
+PhishGuard provides a desktop-based environment for analyzing potentially malicious URLs and email content.
+
+It combines Python, Tkinter, and MySQL to provide phishing analysis, risk classification, scan-history management, and report generation.
+
+This guide provides the basic instructions required to install and use the application.

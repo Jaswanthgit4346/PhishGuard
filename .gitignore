@@ -1,0 +1,57 @@
+
+# ==========================================
+# PHISHGUARD - GIT IGNORE
+# ==========================================
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Environment variables and sensitive data
+.env
+.env.*
+!.env.example
+
+# Generated reports
+reports/*.pdf
+reports/*.csv
+
+# Log files
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Testing and coverage files
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE and editor settings
+.vscode/
+.idea/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Build and distribution files
+build/
+dist/
+*.egg-info/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Backup files
+*.bak
+*.old
+*~

@@ -792,14 +792,28 @@ class PhishGuardApp(tk.Tk):
 
             result = analyze_url(url)
 
-            status = result.get("status", "Success")
-            risk = result.get("risk", "Unknown")
-            reasons = result.get("reasons", [])
-
-            if status != "Analyzed":
+            if not isinstance(result, dict):
                 messagebox.showerror(
                     "URL Analysis Error",
-                    str(result)
+                    "The URL analyzer returned an invalid response."
+                )
+                return
+
+            status = result.get("status")
+            risk = result.get("risk")
+            reasons = result.get("reasons", [])
+
+            if status != "Analyzed" or risk not in ("Low", "Medium", "High"):
+                messagebox.showerror(
+                    "URL Analysis Error",
+                    "The URL could not be analyzed correctly. Please try again."
+                )
+                return
+
+            if not isinstance(reasons, (list, tuple)):
+                messagebox.showerror(
+                    "URL Analysis Error",
+                    "The analyzer returned invalid detection details."
                 )
                 return
 
@@ -909,14 +923,28 @@ class PhishGuardApp(tk.Tk):
 
             result = analyze_email(email_content)
 
-            status = result.get("status", "Success")
-            risk = result.get("risk", "Unknown")
-            reasons = result.get("reasons", [])
-
-            if status != "Analyzed":
+            if not isinstance(result, dict):
                 messagebox.showerror(
                     "Email Analysis Error",
-                    str(result)
+                    "The email analyzer returned an invalid response."
+                )
+                return
+
+            status = result.get("status")
+            risk = result.get("risk")
+            reasons = result.get("reasons", [])
+
+            if status != "Analyzed" or risk not in ("Low", "Medium", "High"):
+                messagebox.showerror(
+                    "Email Analysis Error",
+                    "The email could not be analyzed correctly. Please try again."
+                )
+                return
+
+            if not isinstance(reasons, (list, tuple)):
+                messagebox.showerror(
+                    "Email Analysis Error",
+                    "The analyzer returned invalid detection details."
                 )
                 return
 
@@ -1545,12 +1573,19 @@ class PhishGuardApp(tk.Tk):
 
         try:
 
-            generate_csv_report(path)
+            success = generate_csv_report(path)
 
-            messagebox.showinfo(
-                "Export Successful",
-                f"CSV report saved successfully:\n{path}"
-            )
+            if success:
+                messagebox.showinfo(
+                    "Export Successful",
+                    f"CSV report saved successfully:\n{path}"
+                )
+            else:
+                messagebox.showerror(
+                    "CSV Export Failed",
+                    "The CSV report could not be generated. "
+                    "Please check the database connection and try again."
+                )
 
         except Exception as error:
 
@@ -1574,12 +1609,19 @@ class PhishGuardApp(tk.Tk):
 
         try:
 
-            generate_pdf_report(path)
+            success = generate_pdf_report(path)
 
-            messagebox.showinfo(
-                "Export Successful",
-                f"PDF report saved successfully:\n{path}"
-            )
+            if success:
+                messagebox.showinfo(
+                    "Export Successful",
+                    f"PDF report saved successfully:\n{path}"
+                )
+            else:
+                messagebox.showerror(
+                    "PDF Export Failed",
+                    "The PDF report could not be generated. "
+                    "Please check the database connection and try again."
+                )
 
         except Exception as error:
 

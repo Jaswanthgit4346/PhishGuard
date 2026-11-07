@@ -1,15 +1,30 @@
 
-from backend.database import save_scan, get_scan_history
+from backend.database import get_scan_history, get_dashboard_stats
 
-save_scan(
-    "https://google.com",
-    "Low",
-    ["No suspicious patterns detected."]
-)
 
-print("\n----- SCAN HISTORY -----")
+def test_database_connection_and_history():
+    print("\n----- DATABASE READ-ONLY TEST -----")
 
-records = get_scan_history()
+    records = get_scan_history()
 
-for record in records:
-    print(record)
+    print("Database history retrieval successful.")
+    print("Existing URL scan records:", len(records))
+
+    print("\n----- DASHBOARD STATISTICS -----")
+
+    stats = get_dashboard_stats()
+
+    print("Total Scans:", stats["total"])
+    print("Low Risk:", stats["low"])
+    print("Medium Risk:", stats["medium"])
+    print("High Risk:", stats["high"])
+
+    assert isinstance(records, list)
+    assert isinstance(stats, dict)
+    assert stats["total"] >= 0
+
+    print("\nDatabase read-only test completed successfully.")
+
+
+if __name__ == "__main__":
+    test_database_connection_and_history()

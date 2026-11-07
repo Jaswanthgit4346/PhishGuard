@@ -6,6 +6,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# Prevent repeated email-table initialization during one app session.
+_email_table_ready = False
+
 
 # ==========================================
 # DATABASE CONNECTION
@@ -30,6 +33,11 @@ def connect_database():
 # ==========================================
 
 def create_email_table():
+    global _email_table_ready
+
+    if _email_table_ready:
+        return True
+
     connection = connect_database()
 
     if connection is None:
@@ -52,6 +60,8 @@ def create_email_table():
 
         cursor.execute(query)
         connection.commit()
+
+        _email_table_ready = True
 
         print("Email scan table is ready!")
         return True

@@ -796,7 +796,7 @@ class PhishGuardApp(tk.Tk):
             risk = result.get("risk", "Unknown")
             reasons = result.get("reasons", [])
 
-            if status != "Success":
+            if status != "Analyzed":
                 messagebox.showerror(
                     "URL Analysis Error",
                     str(result)
@@ -913,7 +913,7 @@ class PhishGuardApp(tk.Tk):
             risk = result.get("risk", "Unknown")
             reasons = result.get("reasons", [])
 
-            if status != "Success":
+            if status != "Analyzed":
                 messagebox.showerror(
                     "Email Analysis Error",
                     str(result)
